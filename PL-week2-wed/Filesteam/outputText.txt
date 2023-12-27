@@ -1,0 +1,1 @@
+cd "/Users/danpj/Library/CloudStorage/OneDrive-Personal/School/PL - Data Structures/PL Git/PL-week2-wed/PL-8-30/Filesteam/" && g++ -std=c++17 filestream.cpp -o filestream && "/Users/danpj/Library/CloudStorage/OneDrive-Personal/School/PL - Data Structures/PL Git/PL-week2-wed/PL-8-30/Filesteam/"filestream

@@ -1,0 +1,116 @@
+#include <iostream>
+#include <list>
+
+template <typename E> class LinkedBinaryTree {
+protected:
+  struct Node {
+    E elem;
+    Node *par;
+    Node *left;
+    Node *right;
+    Node() : elem(), par(nullptr), left(nullptr), right(nullptr) {}
+  };
+
+public:
+  class Position {
+  public:
+    Position(Node *v = nullptr) : v(v) {}
+    E &operator*() { return v->elem; }
+    Position left() const { return Position(v->left); }
+    Position right() const { return Position(v->right); }
+    Position parent() const { return Position(v->parent); }
+    bool isRoot() const { return v->par == nullptr; }
+    bool isExteral() const { return v->left == nullptr && v->right == nullptr; }
+    friend class LinkedBinaryTree;
+
+  private:
+    Node *v;
+  };
+
+  typedef std::list<Position> PositionList;
+
+  LinkedBinaryTree() : _root(nullptr), n(0) {}
+  ~LinkedBinaryTree(); // *
+
+  int size() const { return n; }
+  bool empty() const { return n == 0; }
+  Position root() const { return Position(_root); }
+  void addRoot();
+  void expandExternal(const Position &p);
+  PositionList positions() const;
+  void print() const;
+
+protected:
+  void preorder(Node *v, PositionList &pl) const;
+  void preorderPrint(Node *v) const;
+  
+  void postOrderDelete(Node *n); // *
+
+private:
+  Node *_root;
+  int n;
+};
+
+template <typename E> void LinkedBinaryTree<E>::addRoot() {
+  _root = new Node;
+  n = 1;
+}
+
+template <typename E>
+void LinkedBinaryTree<E>::expandExternal(const Position &p) {
+  Node *v = p.v;
+  v->left = new Node;
+  v->left->par = v;
+  v->right = new Node;
+  v->right->par = v;
+  n += 2;
+}
+template <typename E>
+typename LinkedBinaryTree<E>::PositionList
+LinkedBinaryTree<E>::positions() const {
+  PositionList pl;
+  preorder(_root, pl);
+  return PositionList(pl);
+}
+
+template <typename E>
+void LinkedBinaryTree<E>::preorder(Node *v, PositionList &pl) const {
+  pl.push_back(Position(v));
+  if (v->left != NULL) {
+    preorder(v->left, pl);
+  }
+
+  if (v->right != NULL) {
+    preorder(v->right, pl);
+  }
+}
+
+template <typename E> void LinkedBinaryTree<E>::print() const {
+  preorderPrint(_root);
+  std::cout << std::endl;
+}
+
+template <typename E> void LinkedBinaryTree<E>::preorderPrint(Node *v) const {
+  std::cout << v->elem << " ";
+  if (v->left != NULL)
+    preorderPrint(v->left);
+  if (v->right != NULL)
+    preorderPrint(v->right);
+}
+
+
+// new stuff
+template <typename E> LinkedBinaryTree<E>::~LinkedBinaryTree() {
+  postOrderDelete(_root);
+}
+
+template <typename E> void LinkedBinaryTree<E>::postOrderDelete(Node *n) {
+  if (n->left != NULL) {
+    postOrderDelete(n->left);
+  }
+  if (n->right != NULL) {
+    postOrderDelete(n->right);
+  }
+  std::cout << n->elem << std::endl;
+  delete n;
+}

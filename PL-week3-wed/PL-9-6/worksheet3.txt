@@ -1,0 +1,10 @@
+1.	Suppose a dynamic integer array a with indices beginning at 0 has 1000 elements and the line of code a[1000] = a[5] is executed . 
+How many array values must be moved from one memory location to another to complete this assignment statement?
+
+2. Is the formula for finding the location of an element in a dynamic array different 
+from the formula for finding the location of an element in a static array?
+
+3. Memory could be freed when a dynamic array shrinks. What advantages or disadvantages might this have?
+
+4.	When a dynamic array expands, why can’t the existing elements be 
+left in place and extra memory simply be allocated at the end of the existing memory allocation?
